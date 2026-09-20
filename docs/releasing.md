@@ -55,6 +55,20 @@ Bookworm, Homebrew on both macOS architectures, and Arch Linux x86_64/aarch64
 qualification lanes install the generated packages and compile a program with
 `fbc`. Qualification receives no channel credentials.
 
+## Release notes the changelog cannot carry
+
+The generated changelog records what changed. It does not record what a change
+means for an installation that already exists: an interface that stops being
+interchangeable, an output file that changes its name, a platform that becomes
+buildable. [`release-notes/next.md`](release-notes/next.md) collects those
+consequences as they arise. A change with such a consequence adds its note in
+the same pull request that introduces it.
+
+Before the draft release is made visible, merge that file into the release body
+and reset it to the template it carries at its end. The file is a working
+document between releases, not a published one, so an empty file is the normal
+state right after a release.
+
 Merging the Release Please version PR is the explicit stable-release decision.
 For a stable `v<version>` tag, the workflow first proves every channel's
 credentials and destination scope without writing, then publishes the verified

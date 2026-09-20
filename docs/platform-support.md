@@ -26,6 +26,24 @@ assurance level for a Developer Preview host archive. The archive uses the
 normal `bin`, `include/freebasic` and `lib/freebasic/<host>` layout and requires
 the platform C toolchain at use time; it does not bundle a C toolchain.
 
+## macOS output conventions
+
+Mach-O differs from ELF in two ways that are visible in what `fbc` produces on
+macOS, so they are part of the platform contract rather than a property of one
+release.
+
+`fbc -dylib` writes `lib<name>.dylib`, links it with `-dynamiclib` and records
+an install name, the Mach-O counterpart of an ELF `SONAME`. `.so` is the
+loadable-bundle extension on this platform and is not used for shared
+libraries. `DyLibLoad("<name>")` resolves the `.dylib` name.
+
+The `DATA` descriptor uses the natural field layout on Darwin, not the packed
+one the other targets share, because `ld64` requires a pointer relocation to sit
+at a pointer-aligned offset and rejects the packed form fatally on arm64. The
+descriptor is part of the object-file interface between compiled code and the
+runtime, so macOS object files carrying `DATA` statements are interchangeable
+only between builds that agree on this layout.
+
 ## AmigaOS/m68k target-SDK preview
 
 M3 is deliberately limited to classic AmigaOS/m68k. It is not a Tier 1 native
